@@ -1,5 +1,5 @@
 function estValide(button) {
-  return button.innerHTML.length == 0;
+  return button.innerHTML.length == 0; // return true if empty
 }
 
 function setSymbol(btn, symbole) {
@@ -89,14 +89,8 @@ function matchNul(pions) {
   return true;
 }
 
-var Afficheur = function (element) {
-  var affichage = element;
-
-  function setText(message) {
-    affichage.innerHTML = message;
-  }
-
-  return { sendMessage: setText };
+function setMessage(element, message) {
+  element.innerHTML = message
 }
 
 function main() {
@@ -104,15 +98,15 @@ function main() {
   var joueurs = ['X', 'O'];
   var tour = 0;
   var jeuEstFini = false;
-  var afficheur = new Afficheur(document.querySelector("#StatutJeu"));
-  afficheur.sendMessage("Le jeu peut commencer ! <br /> Joueur " + joueurs[tour] + " c'est votre tour.");
+  var StatutJeu = document.querySelector("#StatutJeu");
+  setMessage(StatutJeu, "Le jeu peut commencer ! <br /> Joueur " + joueurs[tour] + " c'est votre tour.");
   for (var i = 0, len = pions.length; i < len; i++) {
     pions[i].addEventListener("click", function () {
       if (jeuEstFini)
         return;
 
       if (!estValide(this)) {
-        afficheur.sendMessage("Case occupée ! <br />Joueur " + joueurs[tour] + " c'est toujours à vous !");
+        setMessage(StatutJeu, "Case occupée ! <br />Joueur " + joueurs[tour] + " c'est toujours à vous !");
 
       }
       else {
@@ -120,18 +114,18 @@ function main() {
         jeuEstFini = rechercherVainqueur(pions, joueurs, tour);
 
         if (jeuEstFini) {
-          afficheur.sendMessage("Le joueur " + joueurs[tour] + " a gagné ! <br /> <a href=\"./index.html\">Rejouer</a>");
+          setMessage(StatutJeu, "Le joueur " + joueurs[tour] + " a gagné ! <br /> <a href=\"./index.html\">Rejouer</a>");
           return;
         }
 
         if (matchNul(pions)) {
-          afficheur.sendMessage("Match Nul ! <br/> <a href=\"./index.html\">Rejouer</a>");
+          setMessage(StatutJeu, "Match Nul ! <br/> <a href=\"./index.html\">Rejouer</a>");
           return;
         }
 
         tour++;
         tour = tour % 2;
-        afficheur.sendMessage("Joueur " + joueurs[tour] + " c'est à vous !");
+        setMessage(StatutJeu, "Joueur " + joueurs[tour] + " c'est à vous !");
       }
     });
   }
